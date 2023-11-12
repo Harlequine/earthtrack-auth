@@ -2,11 +2,10 @@ import SUCCESS_MESSAGE from "../constants/success-message.js"
 import ERROR_MESSAGE from "../constants/error-message.js"
 
 import userService from "../service/user.js";
-import user from "../service/user.js";
 
-const auth = async (req, res) => {
+const authenticate = async (req, res) => {
     try {
-        const tokens = await userService.auth(req.body);
+        const tokens = await userService.authenticate(req.body);
         
         res.cookie('refreshToken', tokens.refreshToken, {
             httpOnly: true, sameSite: "Strict", maxAge:24*60*60*1000, secure: true
@@ -17,7 +16,6 @@ const auth = async (req, res) => {
             token: tokens.accessToken
         });
     } catch (error) {
-        console.log(error);
         if(error.incorrectPassword)
             return res.json(ERROR_MESSAGE.USER_ERROR_PASSWORD);
         
@@ -61,7 +59,7 @@ const logout = async (req, res) => {
 }
 
 export default {
-    auth,
+    authenticate,
     refresh,
     logout
 }

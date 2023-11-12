@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import USERS from "../model/user.js";
 import REFRESH_TOKEN from "../model/refresh-token.js"
 
-const auth = async (reqBody) => {
+const authenticate = async (reqBody) => {
     try {
         const { username, password } = reqBody;
         const user = await USERS.findOne({username: username});
@@ -74,7 +74,6 @@ const refresh = async (reqBody) => {
     if(!token){//if token does not exist
         throw error;
     }
-
         return { accessToken, refreshToken };
 
 }
@@ -89,7 +88,7 @@ const logout = async (reqBody) => {
 }
 
 export default {
-    auth,
+    authenticate,
     refresh,
     logout
 }
